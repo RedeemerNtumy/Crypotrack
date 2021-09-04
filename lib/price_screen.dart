@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'coin_data.dart';
+import 'package:flutter/cupertino.dart';
+import 'dart:io' show Platform;
 
 class PriceScreen extends StatefulWidget {
   @override
@@ -7,7 +9,7 @@ class PriceScreen extends StatefulWidget {
 }
 
 class _PriceScreenState extends State<PriceScreen> {
-  List<DropdownMenuItem<String>> getDropDownItems() {
+  DropdownButton<String> getDropDownAndroid() {
     List<DropdownMenuItem<String>> dropDownItems = [];
     for (String coin in currenciesList) {
       var dropDown = DropdownMenuItem(
@@ -16,7 +18,28 @@ class _PriceScreenState extends State<PriceScreen> {
       );
       dropDownItems.add(dropDown);
     }
-    return dropDownItems;
+    return DropdownButton<String>(
+      value: selectedCurrency,
+      items: dropDownItems,
+      onChanged: (value) {
+        setState(() {
+          selectedCurrency = value.toString();
+        });
+      },
+    );
+  }
+
+  CupertinoPicker pickerApple() {
+    List<Text> items = [];
+    for (String item in currenciesList) {
+      items.add(Text(item));
+    }
+    return CupertinoPicker(
+      backgroundColor: Colors.lightBlue,
+      itemExtent: 32.0,
+      onSelectedItemChanged: (selectedIndex) {},
+      children: items,
+    );
   }
 
   String selectedCurrency = "USD";
@@ -53,20 +76,11 @@ class _PriceScreenState extends State<PriceScreen> {
             ),
           ),
           Container(
-            height: 150.0,
-            alignment: Alignment.center,
-            padding: EdgeInsets.only(bottom: 30.0),
-            color: Colors.lightBlue,
-            child: DropdownButton<String>(
-              value: selectedCurrency,
-              items: getDropDownItems(),
-              onChanged: (value) {
-                setState(() {
-                  selectedCurrency = value.toString();
-                });
-              },
-            ),
-          ),
+              height: 150.0,
+              alignment: Alignment.center,
+              padding: EdgeInsets.only(bottom: 30.0),
+              color: Colors.lightBlue,
+              child: Platform.isIOS ? pickerApple() : getDropDownAndroid()),
         ],
       ),
     );
