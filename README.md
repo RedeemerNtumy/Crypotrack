@@ -1,3 +1,3 @@
 # cryptotrack
 
-![Finished App](https://github.com/londonappbrewery/Images/blob/master/bitcoin-flutter-demo.gif)
+![Finished App](https://github.com/RedeemerNtumy/Crypotrack/blob/master/ezgif.com-gif-maker.gif)
