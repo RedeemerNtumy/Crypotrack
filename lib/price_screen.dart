@@ -25,8 +25,14 @@ class _PriceScreenState extends State<PriceScreen> {
         setState(() {
           getRate();
           selectedCurrency = value.toString();
-          print(selectedCurrency);
-          updateCurrency(selectedCurrency, amount);
+
+          if (selectedCurrency == 'BTC') {
+            updateCurrencyBtc(selectedCurrency, amountBtc);
+          } else if (selectedCurrency == 'ETH') {
+            updateCurrencyEth(selectedCurrency, amountEth);
+          } else {
+            updateCurrencyLtc(selectedCurrency, amountLtc);
+          }
         });
       },
     );
@@ -44,8 +50,14 @@ class _PriceScreenState extends State<PriceScreen> {
         setState(() {
           getRate();
           selectedCurrency = items[selectedIndex].data.toString();
-          print(selectedCurrency);
-          updateCurrency(selectedCurrency, amount);
+
+          if (selectedCurrency == 'BTC') {
+            updateCurrencyBtc(selectedCurrency, amountBtc);
+          } else if (selectedCurrency == 'ETH') {
+            updateCurrencyEth(selectedCurrency, amountEth);
+          } else {
+            updateCurrencyLtc(selectedCurrency, amountLtc);
+          }
         });
       },
       children: items,
@@ -53,19 +65,44 @@ class _PriceScreenState extends State<PriceScreen> {
   }
 
   String selectedCurrency = "USD";
-  String amount = "0";
+  String amountBtc = "0";
+  String amountEth = "0";
+  String amountLtc = "0";
   String currency = "USD";
 
-  void updateCurrency(String money, String coin) {
+  void updateCurrencyBtc(String money, String coin) {
     currency = money;
-    amount = coin;
+    amountBtc = coin;
   }
-
+  void updateCurrencyEth(String money, String coin) {
+    currency = money;
+    amountEth = coin;
+  }
+   void updateCurrencyLtc(String money, String coin) {
+    currency = money;
+    amountLtc = coin;
+  }
   void getRate() async {
     try {
-      double exchangeRate = await CoinData(currency).getCoinData();
+      double exchangeRateBtc = await CoinData('BTC', currency).getCoinData();
       setState(() {
-        amount = exchangeRate.toStringAsFixed(0);
+        amountBtc = exchangeRateBtc.toStringAsFixed(0);
+      });
+    } catch (e) {
+      print(e);
+    }
+    try {
+      double exchangeRateEth = await CoinData('ETH', currency).getCoinData();
+      setState(() {
+        amountEth = exchangeRateEth.toStringAsFixed(0);
+      });
+    } catch (e) {
+      print(e);
+    }
+    try {
+      double exchangeRateEth = await CoinData('LTC', currency).getCoinData();
+      setState(() {
+        amountLtc = exchangeRateEth.toStringAsFixed(0);
       });
     } catch (e) {
       print(e);
@@ -90,23 +127,67 @@ class _PriceScreenState extends State<PriceScreen> {
         children: <Widget>[
           Padding(
             padding: EdgeInsets.fromLTRB(18.0, 18.0, 18.0, 0),
-            child: Card(
-              color: Colors.lightBlueAccent,
-              elevation: 5.0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
-                child: Text(
-                  "1 BTC= $amount $currency",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    color: Colors.white,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Card(
+                  color: Colors.lightBlueAccent,
+                  elevation: 5.0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  child: Padding(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
+                    child: Text(
+                      "1 BTC= $amountBtc $currency",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                Card(
+                  color: Colors.lightBlueAccent,
+                  elevation: 5.0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  child: Padding(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
+                    child: Text(
+                      "1 ETH= $amountEth $currency",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+                Card(
+                  color: Colors.lightBlueAccent,
+                  elevation: 5.0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  child: Padding(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
+                    child: Text(
+                      "1 LTC= $amountLtc $currency",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
           Container(
