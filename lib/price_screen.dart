@@ -43,6 +43,18 @@ class _PriceScreenState extends State<PriceScreen> {
   }
 
   String selectedCurrency = "USD";
+  String bitcoinUSD = "0";
+
+  void getRate() async {
+    try {
+      double exchangeRate = await CoinData().getCoinData();
+      setState(() {
+        bitcoinUSD = exchangeRate.toStringAsFixed(0);
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +77,7 @@ class _PriceScreenState extends State<PriceScreen> {
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
                 child: Text(
-                  '1 BTC = ? USD',
+                  "",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 20.0,

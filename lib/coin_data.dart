@@ -32,12 +32,9 @@ const List<String> cryptoList = [
 ];
 
 class CoinData {
-  CoinData(this.url);
-  final String url;
-
   Future getCoinData() async {
     http.Response response = await http.get(
-      Uri.parse(url),
+      Uri.parse(bitcoinUrl),
     );
     if (response.statusCode == 200) {
       var data = response.body;
@@ -46,6 +43,7 @@ class CoinData {
       return rate;
     } else {
       print(response.statusCode);
+      throw "Could not establis connection";
     }
   }
 }
