@@ -23,8 +23,10 @@ class _PriceScreenState extends State<PriceScreen> {
       items: dropDownItems,
       onChanged: (value) {
         setState(() {
+          getRate();
           selectedCurrency = value.toString();
-          updateCurrency(selectedCurrency);
+          print(selectedCurrency);
+          updateCurrency(selectedCurrency, amount);
         });
       },
     );
@@ -38,7 +40,14 @@ class _PriceScreenState extends State<PriceScreen> {
     return CupertinoPicker(
       backgroundColor: Colors.lightBlue,
       itemExtent: 32.0,
-      onSelectedItemChanged: (selectedIndex) {},
+      onSelectedItemChanged: (selectedIndex) {
+        setState(() {
+          getRate();
+          selectedCurrency = items[selectedIndex].data.toString();
+          print(selectedCurrency);
+          updateCurrency(selectedCurrency, amount);
+        });
+      },
       children: items,
     );
   }
@@ -47,13 +56,14 @@ class _PriceScreenState extends State<PriceScreen> {
   String amount = "0";
   String currency = "USD";
 
-  void updateCurrency(String money) {
+  void updateCurrency(String money, String coin) {
     currency = money;
+    amount = coin;
   }
 
   void getRate() async {
     try {
-      double exchangeRate = await CoinData().getCoinData();
+      double exchangeRate = await CoinData(currency).getCoinData();
       setState(() {
         amount = exchangeRate.toStringAsFixed(0);
       });
@@ -104,7 +114,7 @@ class _PriceScreenState extends State<PriceScreen> {
               alignment: Alignment.center,
               padding: EdgeInsets.only(bottom: 30.0),
               color: Colors.lightBlue,
-              child: Platform.isIOS ? pickerApple() : getDropDownAndroid()),
+              child: Platform.isAndroid ? pickerApple() : getDropDownAndroid()),
         ],
       ),
     );
