@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 const List<String> currenciesList = [
-  'AUD',
+  'USD',
   'BRL',
   'CAD',
   'CNY',
@@ -21,7 +21,7 @@ const List<String> currenciesList = [
   'RUB',
   'SEK',
   'SGD',
-  'USD',
+  'AUD',
   'ZAR'
 ];
 

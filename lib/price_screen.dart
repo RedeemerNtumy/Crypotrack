@@ -114,7 +114,7 @@ class _PriceScreenState extends State<PriceScreen> {
               alignment: Alignment.center,
               padding: EdgeInsets.only(bottom: 30.0),
               color: Colors.lightBlue,
-              child: Platform.isAndroid ? pickerApple() : getDropDownAndroid()),
+              child: Platform.isIOS ? pickerApple() : getDropDownAndroid()),
         ],
       ),
     );
